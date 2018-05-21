@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.ChangedPackages;
 import android.content.pm.FeatureInfo;
 import android.content.pm.InstrumentationInfo;
 import android.content.pm.PackageInfo;
@@ -17,6 +18,8 @@ import android.content.pm.PermissionInfo;
 import android.content.pm.ProviderInfo;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
+import android.content.pm.SharedLibraryInfo;
+import android.content.pm.VersionedPackage;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.graphics.Rect;
@@ -40,6 +43,11 @@ public class FilteredPackageManager extends PackageManager {
     @Override
     public PackageInfo getPackageInfo(String packageName, int flags) throws NameNotFoundException {
         return this.proxy.getPackageInfo(packageName, flags);
+    }
+
+    @Override
+    public PackageInfo getPackageInfo(VersionedPackage versionedPackage, int flags) throws NameNotFoundException {
+        return null;
     }
 
     @Override
@@ -68,6 +76,16 @@ public class FilteredPackageManager extends PackageManager {
     @Override
     public int[] getPackageGids(String packageName) throws NameNotFoundException {
         return this.proxy.getPackageGids(packageName);
+    }
+
+    @Override
+    public int[] getPackageGids(String packageName, int flags) throws NameNotFoundException {
+        return new int[0];
+    }
+
+    @Override
+    public int getPackageUid(String packageName, int flags) throws NameNotFoundException {
+        return 0;
     }
 
     @Override
@@ -176,8 +194,48 @@ public class FilteredPackageManager extends PackageManager {
     }
 
     @Override
+    public boolean isInstantApp() {
+        return false;
+    }
+
+    @Override
+    public boolean isInstantApp(String packageName) {
+        return false;
+    }
+
+    @Override
+    public int getInstantAppCookieMaxBytes() {
+        return 0;
+    }
+
+    @Override
+    public byte[] getInstantAppCookie() {
+        return new byte[0];
+    }
+
+    @Override
+    public void clearInstantAppCookie() {
+
+    }
+
+    @Override
+    public void updateInstantAppCookie(byte[] cookie) {
+
+    }
+
+    @Override
     public String[] getSystemSharedLibraryNames() {
         return this.proxy.getSystemSharedLibraryNames();
+    }
+
+    @Override
+    public List<SharedLibraryInfo> getSharedLibraries(int flags) {
+        return null;
+    }
+
+    @Override
+    public ChangedPackages getChangedPackages(int sequenceNumber) {
+        return null;
     }
 
     @Override
@@ -188,6 +246,11 @@ public class FilteredPackageManager extends PackageManager {
     @Override
     public boolean hasSystemFeature(String name) {
         return this.proxy.hasSystemFeature(name);
+    }
+
+    @Override
+    public boolean hasSystemFeature(String name, int version) {
+        return false;
     }
 
     @Override
@@ -465,9 +528,19 @@ public class FilteredPackageManager extends PackageManager {
         return this.proxy.isSafeMode();
     }
 
+    @Override
+    public void setApplicationCategoryHint(String packageName, int categoryHint) {
+
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public PackageInstaller getPackageInstaller() {
         return this.proxy.getPackageInstaller();
+    }
+
+    @Override
+    public boolean canRequestPackageInstalls() {
+        return false;
     }
 }
